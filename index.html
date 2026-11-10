@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>정보 수업 자료실</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* layout: 상단 탭 + 모눈 배경 위 단일 칼럼(최대 1040px), 자료는 표처럼 줄 맞춘 행 */
+  --paper:#f4f6fa; --surface:#ffffff; --ink:#14203a; --muted:#59647d; --line:#d8deea; --grid:#e5eaf3;
+  --accent:#1f4fd8; --accent-ink:#ffffff;
+  --k-lesson:#1f4fd8; --k-sheet:#0d8459; --k-task:#b86200; --k-link:#676c80; --danger:#c0322b;
+  --font-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0f1524; --surface:#161e31; --ink:#e6ebf5; --muted:#9aa5bd; --line:#2a354d; --grid:#18213a;
+    --accent:#6f95ff; --accent-ink:#0b1020;
+    --k-lesson:#7f9fff; --k-sheet:#4cc795; --k-task:#f0a24a; --k-link:#a3a8bb; --danger:#ff7a72;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0f1524; --surface:#161e31; --ink:#e6ebf5; --muted:#9aa5bd; --line:#2a354d; --grid:#18213a;
+  --accent:#6f95ff; --accent-ink:#0b1020;
+  --k-lesson:#7f9fff; --k-sheet:#4cc795; --k-task:#f0a24a; --k-link:#a3a8bb; --danger:#ff7a72;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;
+  color:var(--ink); font-family:var(--font-body); font-size:16px; line-height:1.6;
+}
+a{color:var(--accent)}
+h1,h2,h3{text-wrap:balance; margin:0; line-height:1.3}
+.mono{font-family:var(--font-mono)}
+.wrap{max-width:1040px; margin:0 auto; padding:0 20px}
+
+/* header */
+header{background:var(--surface); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:5}
+.bar{display:flex; align-items:center; gap:24px; min-height:60px; flex-wrap:wrap}
+.brand{display:flex; align-items:center; gap:10px; font-weight:700; font-size:17px; color:var(--ink); text-decoration:none}
+.brand .prompt{font-family:var(--font-mono); color:var(--accent); font-size:15px}
+nav{display:flex; gap:4px; margin-left:auto; flex-wrap:wrap}
+nav a{padding:8px 14px; border-radius:8px; text-decoration:none; color:var(--muted); font-weight:500; font-size:15px}
+nav a:hover{color:var(--ink); background:var(--paper)}
+nav a[aria-current="page"]{color:var(--ink); background:var(--paper); box-shadow:inset 0 -2px 0 var(--accent)}
+
+main.wrap{padding-top:32px; padding-bottom:64px}
+.view{display:none; flex-direction:column; gap:28px}
+.view.on{display:flex}
+
+/* intro */
+.hero{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:28px; display:grid; grid-template-columns:1.4fr 1fr; gap:28px}
+.hero h1{font-size:30px; letter-spacing:-.01em}
+.hero p{margin:10px 0 0; color:var(--muted); max-width:58ch}
+.code{background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:16px 18px; font-family:var(--font-mono); font-size:13.5px; line-height:1.75; color:var(--muted); overflow-x:auto; white-space:pre}
+.code .k{color:var(--accent)} .code .s{color:var(--k-sheet)} .code .c{opacity:.75}
+.sec-head{display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap}
+.sec-head h2{font-size:20px}
+.sec-head a{font-size:14px; text-decoration:none}
+.cols{display:grid; grid-template-columns:1fr 1fr; gap:20px}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:14px; min-width:0}
+
+.courses{display:grid; grid-template-columns:repeat(2,1fr); gap:16px}
+.course{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:12px; border-top:4px solid var(--accent)}
+.course .meta{display:flex; gap:8px; flex-wrap:wrap; font-size:13px; color:var(--muted)}
+.course .meta span{border:1px solid var(--line); border-radius:999px; padding:1px 10px}
+.course h3{font-size:19px}
+.course p{margin:0; color:var(--muted); font-size:15px}
+.course ol{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:4px; font-size:15px}
+.course ol li{display:flex; gap:10px}
+.course ol li b{font-family:var(--font-mono); font-weight:600; color:var(--accent); font-size:13px; min-width:2.2em; padding-top:2px}
+.course .ev{font-size:14px; color:var(--muted); border-top:1px dashed var(--line); padding-top:10px}
+.course .ev strong{color:var(--ink); font-weight:600}
+.course button{align-self:flex-start}
+
+/* materials */
+.tools{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+.chips{display:flex; flex-wrap:wrap; gap:6px}
+.chip{border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:999px; padding:6px 14px; font:inherit; font-size:14px; cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink); color:var(--surface); border-color:var(--ink)}
+input,select,textarea{font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:8px 12px; min-width:0}
+textarea{resize:vertical; min-height:80px}
+.search{flex:1 1 220px}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+.list{background:var(--surface); border:1px solid var(--line); border-radius:14px; overflow:hidden}
+.row{display:grid; grid-template-columns:96px 1fr auto; gap:16px; align-items:start; padding:16px 20px; border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.kind{font-family:var(--font-mono); font-size:12px; font-weight:600; border-radius:6px; padding:3px 8px; text-align:center; color:var(--kc); background:color-mix(in srgb,var(--kc) 13%,transparent); margin-top:2px}
+.row h3{font-size:16px; font-weight:600}
+.row p{margin:4px 0 0; color:var(--muted); font-size:14.5px; white-space:pre-wrap; max-width:70ch}
+.row .m{margin-top:6px; font-size:13px; color:var(--muted); display:flex; gap:6px 14px; flex-wrap:wrap}
+.acts{display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end}
+.due{font-family:var(--font-mono); font-size:12.5px; font-weight:600; padding:3px 9px; border-radius:6px; border:1px solid var(--k-task); color:var(--k-task); white-space:nowrap}
+.due.over{border-color:var(--line); color:var(--muted)}
+.btn{display:inline-flex; align-items:center; gap:6px; font:inherit; font-size:14px; font-weight:600; border-radius:8px; padding:7px 14px; cursor:pointer; text-decoration:none; border:1px solid var(--accent); background:var(--accent); color:var(--accent-ink); white-space:nowrap}
+.btn.ghost{background:transparent; color:var(--accent)}
+.btn.del{background:transparent; color:var(--danger); border-color:transparent; font-weight:500; padding:7px 8px}
+.btn.del.arm{border-color:var(--danger)}
+.btn[disabled]{opacity:.55; cursor:progress}
+.mini{display:flex; flex-direction:column}
+.mini .row{grid-template-columns:80px 1fr auto; padding:12px 0; border-top:1px dashed var(--line)}
+.mini .row:first-child{border-top:0; padding-top:0}
+.empty{padding:28px 20px; color:var(--muted); text-align:center; font-size:15px}
+.notice{padding:18px 20px; border-top:1px solid var(--line)}
+.notice:first-child{border-top:0}
+.notice h3{font-size:16px; font-weight:600; display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+.notice .pin{font-family:var(--font-mono); font-size:11.5px; color:var(--accent); border:1px solid var(--accent); border-radius:5px; padding:0 6px}
+.notice p{margin:6px 0 0; white-space:pre-wrap; max-width:70ch}
+.notice .m{font-size:13px; color:var(--muted); margin-top:6px; display:flex; gap:12px; align-items:center}
+
+footer{color:var(--muted); font-size:13px; text-align:center; padding:0 20px 40px}
+
+@media (max-width:760px){
+  .hero,.cols,.courses{grid-template-columns:1fr}
+  .row{grid-template-columns:1fr; gap:8px}
+  .kind{justify-self:start}
+  .acts{justify-content:flex-start}
+  .form{grid-template-columns:1fr}
+  .hero h1{font-size:25px}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+<style>
+.status{font-size:14px; color:var(--danger); background:var(--surface); border:1px solid var(--danger); border-radius:10px; padding:12px 16px; display:none; white-space:pre-wrap}
+.status.on{display:block}
+</style>
+<!-- 사이트 내용은 모두 data.js 에 있습니다. 자료·공지·과목을 바꾸려면 data.js 만 고치세요. -->
+<script src="data.js"></script>
+</head>
+<body>
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#intro"><span class="prompt">&gt;_</span><span id="site-title">정보 수업 자료실</span></a>
+    <nav aria-label="주요 메뉴">
+      <a href="#intro" data-view="intro">수업 소개</a>
+      <a href="#materials" data-view="materials">학습자료</a>
+      <a href="#notices" data-view="notices">공지사항</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="status" id="status" role="alert"></div>
+
+  <section class="view" id="v-intro" aria-label="수업 소개">
+    <div class="hero">
+      <div>
+        <h1 id="hero-title">컴퓨터처럼 생각하고,<br>사람을 위해 만듭니다.</h1>
+        <p id="hero-text"></p>
+      </div>
+<div class="code" aria-label="수업 규칙"><span class="c"># 우리 수업의 약속</span>
+<span class="k">def</span> 수업시간():
+    준비물 = [<span class="s">"학습자료 확인"</span>, <span class="s">"계정 로그인"</span>]
+    <span class="k">while</span> 수업중:
+        질문하기()      <span class="c"># 모르면 바로 묻기</span>
+        직접_실행해보기()
+    <span class="k">return</span> <span class="s">"오늘 배운 것 한 줄 정리"</span></div>
+    </div>
+
+    <div class="cols">
+      <div class="panel">
+        <div class="sec-head"><h2>다가오는 과제</h2><a href="#materials" data-jump="과제">과제 전체 보기 →</a></div>
+        <div class="mini" id="home-tasks"></div>
+      </div>
+      <div class="panel">
+        <div class="sec-head"><h2>최근 공지</h2><a href="#notices">공지 전체 보기 →</a></div>
+        <div class="mini" id="home-notices"></div>
+      </div>
+    </div>
+
+    <div class="sec-head"><h2>개설 과목</h2></div>
+    <div class="courses" id="courses"></div>
+  </section>
+
+  <section class="view" id="v-materials" aria-label="학습자료">
+    <div class="sec-head"><h2>학습자료</h2></div>
+    <div class="tools"><div class="chips" id="course-chips" role="group" aria-label="과목 선택"></div></div>
+    <div class="tools">
+      <label for="kind-filter" class="mono" style="font-size:13px;color:var(--muted)">종류</label>
+      <select id="kind-filter"><option value="">전체</option><option>수업자료</option><option>활동지</option><option>과제</option><option>참고링크</option></select>
+      <input id="q" class="search" type="search" placeholder="제목, 단원, 설명으로 찾기" aria-label="자료 검색">
+    </div>
+    <div class="list" id="mat-list"></div>
+  </section>
+
+  <section class="view" id="v-notices" aria-label="공지사항">
+    <div class="sec-head"><h2>공지사항</h2></div>
+    <div class="list" id="not-list"></div>
+  </section>
+</main>
+<footer id="footer">정보 교과 · 자료는 수업 목적으로만 사용해 주세요.</footer>
+
+<script>
+const DATA = window.SITE_DATA;
+const $ = s => document.querySelector(s);
+const KIND = { "수업자료":"--k-lesson", "활동지":"--k-sheet", "과제":"--k-task", "참고링크":"--k-link" };
+const COLORS = ["--k-lesson","--k-sheet","--k-task","--k-link"];
+const state = { course:"", kind:"", q:"" };
+
+function el(tag, attrs={}, ...kids){
+  const n=document.createElement(tag);
+  for(const [k,v] of Object.entries(attrs)){
+    if(v==null||v===false) continue;
+    if(k==="class") n.className=v; else if(k==="style") n.setAttribute("style",v);
+    else if(k.startsWith("on")) n.addEventListener(k.slice(2),v); else n.setAttribute(k,v===true?"":v);
+  }
+  for(const c of kids.flat()){ if(c==null||c===false) continue; n.append(c.nodeType?c:document.createTextNode(String(c))); }
+  return n;
+}
+function showError(t){ const s=$("#status"); s.textContent=t; s.classList.add("on"); }
+
+if(!DATA){
+  showError("data.js 를 읽지 못했어요.\n· data.js 파일이 index.html 과 같은 위치에 있는지\n· 최근에 고친 부분에 쉼표(,)나 따옴표(\")가 빠지지 않았는지 확인해 주세요.");
+}
+const COURSES=(DATA&&DATA.courses)||[];
+const MATERIALS=((DATA&&DATA.materials)||[]).slice().sort((a,b)=>String(b.date||"").localeCompare(String(a.date||"")));
+const NOTICES=((DATA&&DATA.notices)||[]).slice().sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||String(b.date||"").localeCompare(String(a.date||"")));
+
+const courseName=id=>(COURSES.find(c=>c.id===id)||{}).name||"기타";
+const fmtDate=d=>String(d||"").replaceAll("-",".");
+function dday(due){
+  if(!due) return null;
+  const [y,m,d]=String(due).split("-").map(Number); if(!y||!m||!d) return null;
+  const t=new Date(); const today=new Date(t.getFullYear(),t.getMonth(),t.getDate());
+  const diff=Math.round((new Date(y,m-1,d)-today)/86400000);
+  return {diff,label:diff===0?"D-DAY":diff>0?`D-${diff}`:"마감",date:`${m}/${d}`};
+}
+function hrefOf(m){
+  const u=m.file||m.link||""; if(!u) return null;
+  if(/^https?:\/\//i.test(u)) return u;
+  if(/^[a-z]+:/i.test(u)) return null;          // javascript: 등은 막음
+  return encodeURI(u);                            // files/한글이름.pdf 같은 상대 경로
+}
+
+function renderCourses(){
+  const box=$("#courses"); box.replaceChildren();
+  COURSES.forEach((c,i)=>{
+    box.append(el("article",{class:"course",style:`border-top-color:var(${COLORS[i%COLORS.length]})`},
+      el("div",{class:"meta"},c.grade?el("span",{},c.grade):null,c.hours?el("span",{},c.hours):null),
+      el("h3",{},c.name),
+      c.summary?el("p",{},c.summary):null,
+      el("ol",{},(c.units||[]).map((u,j)=>el("li",{},el("b",{},String(j+1).padStart(2,"0")),u))),
+      c.evaluation?el("div",{class:"ev"},el("strong",{},"평가 "),c.evaluation):null,
+      el("button",{class:"btn ghost",type:"button",onclick:()=>{state.course=c.id;state.kind="";$("#kind-filter").value="";location.hash="materials";renderMaterials();}},`${c.name} 자료 보기 →`)));
+  });
+  const chips=$("#course-chips"); chips.replaceChildren();
+  [{id:"",name:"전체"},...COURSES].forEach(c=>chips.append(el("button",{class:"chip",type:"button","data-id":c.id,onclick:()=>{state.course=c.id;renderMaterials();}},c.name)));
+}
+
+function materialRow(m,compact){
+  const href=hrefOf(m), kc=KIND[m.kind]||"--k-link", isFile=!!m.file&&!/^https?:/i.test(m.file);
+  const acts=el("div",{class:"acts"});
+  if(m.kind==="과제"&&m.due){ const d=dday(m.due); if(d) acts.append(el("span",{class:"due"+(d.diff<0?" over":""),title:`마감 ${m.due}`},`${d.label} · ${d.date}`)); }
+  if(!compact&&href) acts.append(el("a",{class:"btn",href,target:"_blank",rel:"noopener"},isFile?"열기":"바로가기 ↗"));
+  const title=compact&&href?el("a",{href,target:"_blank",rel:"noopener",style:"color:inherit"},m.title||"(제목 없음)"):(m.title||"(제목 없음)");
+  const fname=isFile?decodeURIComponent(m.file.split("/").pop()):null;
+  return el("div",{class:"row"},
+    el("span",{class:"kind",style:`--kc:var(${kc})`},m.kind||"자료"),
+    el("div",{},el("h3",{},title),!compact&&m.desc?el("p",{},m.desc):null,
+      compact?el("div",{class:"m"},el("span",{},courseName(m.course)))
+             :el("div",{class:"m"},el("span",{},courseName(m.course)),m.unit?el("span",{},m.unit):null,m.date?el("span",{class:"mono"},fmtDate(m.date)):null,fname?el("span",{class:"mono"},fname):null)),
+    acts);
+}
+
+function renderMaterials(){
+  document.querySelectorAll("#course-chips .chip").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.id===state.course)));
+  const box=$("#mat-list"); box.replaceChildren();
+  const q=state.q.trim().toLowerCase();
+  const rows=MATERIALS.filter(m=>(!state.course||m.course===state.course)&&(!state.kind||m.kind===state.kind)&&(!q||[m.title,m.unit,m.desc].join(" ").toLowerCase().includes(q)));
+  if(!rows.length) box.append(el("div",{class:"empty"},MATERIALS.length?"조건에 맞는 자료가 없어요. 과목이나 종류를 바꿔 보세요.":"아직 올라온 자료가 없어요."));
+  rows.forEach(m=>box.append(materialRow(m,false)));
+}
+
+function renderNotices(){
+  const box=$("#not-list"); box.replaceChildren();
+  if(!NOTICES.length) box.append(el("div",{class:"empty"},"등록된 공지가 없어요."));
+  NOTICES.forEach(n=>box.append(el("article",{class:"notice"},
+    el("h3",{},n.pinned?el("span",{class:"pin"},"고정"):null,n.title||"(제목 없음)"),
+    n.body?el("p",{},n.body):null,
+    el("div",{class:"m"},el("span",{class:"mono"},fmtDate(n.date))))));
+}
+
+function renderHome(){
+  if(DATA&&DATA.intro) $("#hero-text").textContent=DATA.intro;
+  if(DATA&&DATA.siteTitle){ $("#site-title").textContent=DATA.siteTitle; document.title=DATA.siteTitle; }
+  if(DATA&&DATA.footer) $("#footer").textContent=DATA.footer;
+  const t=$("#home-tasks"); t.replaceChildren();
+  const tasks=MATERIALS.filter(m=>m.kind==="과제"&&m.due&&(dday(m.due)||{diff:-1}).diff>=0).sort((a,b)=>String(a.due).localeCompare(String(b.due))).slice(0,4);
+  if(!tasks.length) t.append(el("div",{class:"empty"},"마감이 남은 과제가 없어요."));
+  tasks.forEach(m=>t.append(materialRow(m,true)));
+  const n=$("#home-notices"); n.replaceChildren();
+  if(!NOTICES.length) n.append(el("div",{class:"empty"},"등록된 공지가 없어요."));
+  NOTICES.slice(0,4).forEach(x=>n.append(el("div",{class:"row"},
+    el("span",{class:"mono",style:"font-size:12.5px;color:var(--muted);padding-top:2px"},fmtDate(x.date).slice(5)),
+    el("div",{},el("h3",{},el("a",{href:"#notices",style:"color:inherit"},x.title||"(제목 없음)"))),
+    x.pinned?el("span",{class:"due",style:"border-color:var(--accent);color:var(--accent)"},"고정"):el("span",{}))));
+}
+
+function route(){
+  const v=["intro","materials","notices"].includes(location.hash.slice(1))?location.hash.slice(1):"intro";
+  document.querySelectorAll(".view").forEach(s=>s.classList.toggle("on",s.id==="v-"+v));
+  document.querySelectorAll("nav a").forEach(a=>{ if(a.dataset.view===v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
+}
+window.addEventListener("hashchange",route);
+document.querySelectorAll("[data-jump]").forEach(a=>a.addEventListener("click",()=>{state.kind=a.dataset.jump;state.course="";$("#kind-filter").value=state.kind;renderMaterials();}));
+$("#kind-filter").addEventListener("change",e=>{state.kind=e.target.value;renderMaterials();});
+$("#q").addEventListener("input",e=>{state.q=e.target.value;renderMaterials();});
+
+renderCourses(); renderHome(); renderMaterials(); renderNotices(); route();
+</script>
+</body>
+</html>
