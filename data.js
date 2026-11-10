@@ -65,6 +65,16 @@ window.SITE_DATA = {
       /* 파일로 올릴 때는 위 줄 대신 →  file: "files/정렬_비교_활동지.pdf", */
       date: "2026-11-09",
       due: ""
+    },
+    {
+      title: "AICE 3~4차시 자료",
+      course: "ai",
+      kind: "활동지",
+      unit: "데이터 탐색과 전처리",
+      desc: "데이터 시각화 및 전처리.",
+      file: "files/AICE_4회차_데이터전처리_학생용.ipynb", */
+      date: "2026-11-09",
+      due: ""
     }
   ],
 
